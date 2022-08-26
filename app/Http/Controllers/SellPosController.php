@@ -298,6 +298,12 @@ class SellPosController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+
+
+ 
+           
+        
         if (!auth()->user()->can('sell.create') && !auth()->user()->can('direct_sell.access') && !auth()->user()->can('so.create')) {
             abort(403, 'Unauthorized action.');
         }
@@ -359,8 +365,15 @@ class SellPosController extends Controller
                 $discount = [
                     'discount_type' => $input['discount_type'],
                     'discount_amount' => $input['discount_amount']
-                ];
-                $invoice_total = $this->productUtil->calculateInvoiceTotal($input['products'], $input['tax_rate_id'], $discount);
+                ];       
+                foreach($request['products'] as $items ){
+                    if($items['product_id'] == 76){
+                        print_r($items);die;
+                       $invoice_hallmark_total = $this->productUtil->calculateforhallmark($items, $items['tax_id'], $discount);
+                    }
+                }
+                $invoice_total = $this->productUtil->calculateInvoiceTotal( $input['products'], $input['tax_rate_id'], $discount);
+                dd($invoice_total);
 
                 DB::beginTransaction();
 
@@ -1107,7 +1120,8 @@ class SellPosController extends Controller
                     'discount_type' => $input['discount_type'],
                     'discount_amount' => $input['discount_amount']
                 ];
-                $invoice_total = $this->productUtil->calculateInvoiceTotal($input['products'], $input['tax_rate_id'], $discount);
+                $invoice_total = $this->productUtil->calculateInvoiceTotal($input['products'], $input['ta
+                x_rate_id'], $discount);
 
                 if (!empty($request->input('transaction_date'))) {
                     $input['transaction_date'] = $this->productUtil->uf_date($request->input('transaction_date'), true);
