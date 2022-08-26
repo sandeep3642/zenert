@@ -1,0 +1,1 @@
+[2022-04-13 14:42:10] development.EMERGENCY: File:/var/www/vhosts/zenort.com/httpdocs/crm2/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.phpLine:454Message:No query results for model [App\Variation].  

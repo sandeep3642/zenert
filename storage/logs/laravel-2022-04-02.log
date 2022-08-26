@@ -1,0 +1,5 @@
+[2022-04-02 14:49:00] development.EMERGENCY: File:/var/www/vhosts/zenort.com/httpdocs/crm2/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.phpLine:371Message:No query results for model [App\Contact] 28  
+[2022-04-02 14:49:05] development.EMERGENCY: File:/var/www/vhosts/zenort.com/httpdocs/crm2/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.phpLine:371Message:No query results for model [App\Contact] 28  
+[2022-04-02 14:49:13] development.EMERGENCY: File:/var/www/vhosts/zenort.com/httpdocs/crm2/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.phpLine:371Message:No query results for model [App\Contact] 27  
+[2022-04-02 14:49:17] development.EMERGENCY: File:/var/www/vhosts/zenort.com/httpdocs/crm2/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.phpLine:371Message:No query results for model [App\Contact] 27  
+[2022-04-02 14:49:21] development.EMERGENCY: File:/var/www/vhosts/zenort.com/httpdocs/crm2/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.phpLine:371Message:No query results for model [App\Contact] 27  
