@@ -1283,6 +1283,7 @@ class SellController extends Controller
         $business_id = request()->session()->get('user.business_id');
         $taxes = TaxRate::where('business_id', $business_id)
             ->pluck('name', 'id');
+        //   dd($taxes);
         $query = Transaction::where('business_id', $business_id)
             ->where('id', $id)
             ->with(['contact', 'sell_lines' => function ($q) {
@@ -1300,13 +1301,17 @@ class SellController extends Controller
             ->latest()
             ->get();
 
+
+        // dd($sell);
+
+
         $line_taxes = [];
         foreach ($sell->sell_lines as $key => $value) {
             if (!empty($value->sub_unit_id)) {
                 $formated_sell_line = $this->transactionUtil->recalculateSellLineTotals($business_id, $value);
                 $sell->sell_lines[$key] = $formated_sell_line;
             }
-
+            // dd($value->tax_id);     
             if (!empty($taxes[$value->tax_id])) {
                 if (isset($line_taxes[$taxes[$value->tax_id]])) {
                     $line_taxes[$taxes[$value->tax_id]] += ($value->item_tax * $value->quantity);
@@ -1315,11 +1320,14 @@ class SellController extends Controller
                 }
             }
         }
+        // dd($line_taxes);
 
         $payment_types = $this->transactionUtil->payment_types($sell->location_id, true);
+
         $order_taxes = [];
         if (!empty($sell->tax)) {
             if ($sell->tax->is_tax_group) {
+                // dd('hello');
                 $order_taxes = $this->transactionUtil->sumGroupTaxDetails($this->transactionUtil->groupTaxDetails($sell->tax, $sell->tax_amount));
             } else {
                 $order_taxes[$sell->tax->name] = $sell->tax_amount;
@@ -1341,6 +1349,7 @@ class SellController extends Controller
         }
         $status_color_in_activity = Transaction::sales_order_statuses();
         $sales_orders = $sell->salesOrders();
+// dd($sell);
 
         return view('sale_pos.show')
             ->with(compact(

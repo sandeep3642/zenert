@@ -190,6 +190,7 @@
     <div class="row">
       <div class="col-sm-12 col-xs-12">
         <h4>{{ __('sale.products') }}:</h4>
+       
       </div>
 
       <div class="col-sm-12 col-xs-12">
@@ -205,6 +206,7 @@
       @if($sell->type != 'sales_order')
       <div class="col-sm-12 col-xs-12">
         <h4>{{ __('sale.payment_info') }}:</h4>
+        
       </div>
       <div class="col-md-6 col-sm-12 col-xs-12">
         <div class="table-responsive">
@@ -255,9 +257,10 @@
             <tr>
               <th>{{ __('sale.total') }}: </th>
               <td></td>
-              <td><span class="display_currency pull-right" data-currency_symbol="true">{{ $sell->total_before_tax }}</span></td>
+            <td><span class="display_currency pull-right" data-currency_symbol="true">{{ $sell->total_before_tax }}</span></td>
             </tr>
             <tr>
+              
               <th>{{ __('sale.discount') }}:</th>
               <td><b>(-)</b></td>
               <td><div class="pull-right"><span class="display_currency" @if( $sell->discount_type == 'fixed') data-currency_symbol="true" @endif>{{ $sell->discount_amount }}</span> @if( $sell->discount_type == 'percentage') {{ '%'}} @endif</span></div></td>
@@ -277,6 +280,7 @@
               </tr>
             @endif
             <tr>
+         
               <th>{{ __('sale.order_tax') }}:</th>
               <td><b>(+)</b></td>
               <td class="text-right">
@@ -291,7 +295,9 @@
             </tr>
             @if(!empty($line_taxes))
             <tr>
+             
               <th>{{ __('lang_v1.line_taxes') }}:</th>
+   
               <td></td>
               <td class="text-right">
                 @if(!empty($line_taxes))

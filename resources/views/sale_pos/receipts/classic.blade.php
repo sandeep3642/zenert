@@ -260,7 +260,7 @@
             <tr>
                 <td colspan="6" class="text-center">
                     <b class="invoice-center">TAX INVOICE</b>
-                    <span class="invoice-head">[ ] Original [ ] Duplicate [ ] Transporter</span>
+                    <span class="invoice-head">[ ] Original [ ] Duplicateee [ ] Transporter</span>
                 </td>
             </tr>
             <tr>
@@ -534,7 +534,8 @@
                 <td>CGST</td>
                 <th> (+)
 					@if(strtolower($receipt_details->state) === strtolower("Uttarakhand"))
-                    {{ number_format((float) ($receipt_details->tax_cgst_sgst+$hallmark_price*9/100 + ($receipt_details->discount_unformatted * 3) / 100) / 2,2,'.','') }}
+                    <!-- {{ number_format((float) ($receipt_details->tax_cgst_sgst+$hallmark_price*9/100 + ($receipt_details->discount_unformatted * 3) / 100) / 2,2,'.','') }} -->
+                    {{ number_format((float) ($receipt_details->tax_cgst_sgst)/ 2,2,'.','') }}
 					@else
 					{{'0.00'}}
 					@endif
@@ -555,7 +556,8 @@
                 <td>SGST</td>
                 <th> (+)
 					@if(strtolower($receipt_details->state) === strtolower("Uttarakhand"))
-                    {{ number_format((float) ($receipt_details->tax_cgst_sgst +$hallmark_price*9/100+ ($receipt_details->discount_unformatted * 3) / 100) / 2,2,'.','') }}
+                    <!-- {{ number_format((float) ($receipt_details->tax_cgst_sgst +$hallmark_price*9/100+ ($receipt_details->discount_unformatted * 3) / 100) / 2,2,'.','') }} -->
+                    {{ number_format((float) ($receipt_details->tax_cgst_sgst)/ 2,2,'.','') }}
 					@else
 					{{'0.00'}}
 					@endif
@@ -583,7 +585,9 @@
             <tr>
                 <td>Sub Total</td>
                 @if($hallmark=='7616')
-                <th>{{ number_format((float) ($receipt_details->subtotal_unformatted +($receipt_details->tax_cgst_sgst+$hallmark_price*18/100 + ($receipt_details->discount_unformatted * 3) / 100)),2,'.','') }}
+                <!-- <th>{{ number_format((float) ($receipt_details->subtotal_unformatted +($receipt_details->tax_cgst_sgst+$hallmark_price*18/100 + ($receipt_details->discount_unformatted * 3) / 100)),2,'.','') }}
+                </th> -->
+                <th>{{ number_format((float) ($receipt_details->subtotal_unformatted + $receipt_details->tax_cgst_sgst),2,'.','') }}
                 </th>
                 @else
                 <th>{{ number_format((float) ($receipt_details->subtotal_unformatted +($receipt_details->tax_cgst_sgst+ ($receipt_details->discount_unformatted * 3) / 100)),2,'.','') }}
@@ -603,7 +607,7 @@
                 <td>Round Off</td>
                 @if($hallmark=='7616')
                 @php 
-                $full_value=(string)number_format((float) ($receipt_details->subtotal_unformatted +($receipt_details->tax_cgst_sgst+$hallmark_price*18/100 + ($receipt_details->discount_unformatted * 3) / 100)),2,'.','');
+                $full_value=(string)number_format((float) ($receipt_details->subtotal_unformatted + $receipt_details->tax_cgst_sgst),2,'.','');
                 $round_value=explode(".",$full_value);
                 @endphp
                 <th>{{"-0.".$round_value[1]}}</th>
@@ -637,7 +641,7 @@
                                 <div class="detail-title" style="width:100%;">Dr AMT:
                                     @if (!empty($receipt_details->total_paid))
                                     @if($hallmark=='7616')
-                                    <b>{{ $receipt_details->total_without_point }}</b>
+                                    <b>{{ $receipt_details->total_paid }}</b>
                                     @else
                                     <b> {{ $receipt_details->total_paid }}</b>
                                     @endif

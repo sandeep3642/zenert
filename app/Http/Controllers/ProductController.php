@@ -1597,6 +1597,7 @@ class ProductController extends Controller
      */
     public function saveSellingPrices(Request $request)
     {
+        // dd($request->all());
         if (!auth()->user()->can('product.create')) {
             abort(403, 'Unauthorized action.');
         }

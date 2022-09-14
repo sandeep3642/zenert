@@ -89,8 +89,7 @@
         "sort-packages": true,
         "optimize-autoloader": true,
         "allow-plugins": {
-            "ocramius/package-versions": true,
-            "composer/package-versions-deprecated": true
+            "ocramius/package-versions": true
         }
     },
     "minimum-stability": "dev",

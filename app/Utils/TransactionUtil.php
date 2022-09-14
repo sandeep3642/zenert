@@ -51,7 +51,7 @@ class TransactionUtil extends Util
         $invoice_scheme_id = !empty($input['invoice_scheme_id']) ? $input['invoice_scheme_id'] : null;
         $invoice_no = !empty($input['invoice_no']) ? $input['invoice_no'] : $this->getInvoiceNumber($business_id, $input['status'], $input['location_id'], $invoice_scheme_id, $sale_type);
 
-        $final_total = $uf_data ? $this->num_uf($input['final_total']) : $input['final_total'];
+        $final_total = $uf_data ? $this->num_uf($invoice_total['final_total']) : $invoice_total['final_total'];
         $transaction = Transaction::create([
             'business_id' => $business_id,
             'location_id' => $input['location_id'],
@@ -1359,15 +1359,15 @@ class TransactionUtil extends Util
         if ($transaction_type == 'sell_return') {
             $output['total_label'] = $invoice_layout->cn_amount_label . ':';
             $output['total'] = $this->num_f($transaction->final_total+$this->hallmark_price*$this->hallmark_quantity*18/100, $show_currency, $business_details);
-            $output['total_without_point']=$this->num_f((int)$transaction->final_total+$this->hallmark_price*$this->hallmark_quantity*18/100, $show_currency, $business_details);
+            $output['total_without_point']=$this->num_f((int)$transaction->final_total, $show_currency, $business_details);
         } else {
             $output['total_label'] = $invoice_layout->total_label . ':';
-            $output['total'] = $this->num_f($transaction->final_total+$this->hallmark_price*$this->hallmark_quantity*18/100, $show_currency, $business_details);
-            $output['total_without_point']=$this->num_f(intval($transaction->final_total+$this->hallmark_price*$this->hallmark_quantity*18/100), $show_currency, $business_details);
+            $output['total'] = $this->num_f($transaction->final_total, $show_currency, $business_details);
+            $output['total_without_point']=$this->num_f(intval($transaction->final_total), $show_currency, $business_details);
         }
         if (!empty($il->common_settings['show_total_in_words'])) {
             $word_format = isset($il->common_settings['num_to_word_format']) ? $il->common_settings['num_to_word_format'] : 'international';
-            $output['total_without_point']=$this->num_f(intval($transaction->final_total+$this->hallmark_price*$this->hallmark_quantity*18/100), $show_currency, $business_details);
+            $output['total_without_point']=$this->num_f(intval($transaction->final_total), $show_currency, $business_details);
         }
 
         //Paid & Amount due, only if final
@@ -1375,7 +1375,7 @@ class TransactionUtil extends Util
             $paid_amount = $this->getTotalPaid($transaction->id);
             $due = $transaction->final_total - $paid_amount;
 
-            $output['total_paid'] = ($paid_amount == 0) ? 0 : $this->num_f($paid_amount+$this->hallmark_price*$this->hallmark_quantity*18/100, $show_currency, $business_details);
+            $output['total_paid'] = ($paid_amount == 0) ? 0 : $this->num_f($paid_amount, $show_currency, $business_details);
             $output['total_paid_label'] = $il->paid_label;
             $output['total_due'] = ($due == 0) ? 0 : $this->num_f($due, $show_currency, $business_details);
             $output['total_due_label'] = $il->total_due_label;
@@ -3857,7 +3857,7 @@ class TransactionUtil extends Util
     public function sumGroupTaxDetails($group_tax_details)
     {
         $output = [];
-
+//dd($group_tax_details);
         foreach ($group_tax_details as $group_tax_detail) {
             if (!isset($output[$group_tax_detail['name']])) {
                 $output[$group_tax_detail['name']] = 0;
@@ -3865,6 +3865,11 @@ class TransactionUtil extends Util
             $output[$group_tax_detail['name']] += $group_tax_detail['calculated_tax'];
         }
 
+//         $output = [
+//   "cGST 9%" => 500.6792,
+//   "sGST 9%" => 500.6792
+//         ];
+// dd( $output);
         return $output;
     }
 

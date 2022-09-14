@@ -298,12 +298,6 @@ class SellPosController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-
-
- 
-           
-        
         if (!auth()->user()->can('sell.create') && !auth()->user()->can('direct_sell.access') && !auth()->user()->can('so.create')) {
             abort(403, 'Unauthorized action.');
         }
@@ -365,15 +359,8 @@ class SellPosController extends Controller
                 $discount = [
                     'discount_type' => $input['discount_type'],
                     'discount_amount' => $input['discount_amount']
-                ];       
-                foreach($request['products'] as $items ){
-                    if($items['product_id'] == 76){
-                        print_r($items);die;
-                       $invoice_hallmark_total = $this->productUtil->calculateforhallmark($items, $items['tax_id'], $discount);
-                    }
-                }
-                $invoice_total = $this->productUtil->calculateInvoiceTotal( $input['products'], $input['tax_rate_id'], $discount);
-                dd($invoice_total);
+                ];
+                $invoice_total = $this->productUtil->calculateInvoiceTotal($input['products'], $input['tax_rate_id'], $discount);
 
                 DB::beginTransaction();
 
@@ -1120,8 +1107,7 @@ class SellPosController extends Controller
                     'discount_type' => $input['discount_type'],
                     'discount_amount' => $input['discount_amount']
                 ];
-                $invoice_total = $this->productUtil->calculateInvoiceTotal($input['products'], $input['ta
-                x_rate_id'], $discount);
+                $invoice_total = $this->productUtil->calculateInvoiceTotal($input['products'], $input['tax_rate_id'], $discount);
 
                 if (!empty($request->input('transaction_date'))) {
                     $input['transaction_date'] = $this->productUtil->uf_date($request->input('transaction_date'), true);
@@ -1348,6 +1334,7 @@ class SellPosController extends Controller
         if (!$is_direct_sale) {
             return $output;
         } else {
+        
             if ($input['status'] == 'draft') {
                 if (isset($input['is_quotation']) && $input['is_quotation'] == 1) {
                     return redirect()
@@ -1359,13 +1346,26 @@ class SellPosController extends Controller
                         ->with('status', $output);
                 }
             } else {
+               
+                //$invoice_total = $this->productUtil->calculateInvoiceTotal($input['products'], $input['tax_rate_id'], $discount);
+
+                //$transaction = $this->transactionUtil->updateSellTransaction($id, $business_id, $input, $invoice_total, $user_id);
+
+                // dd($transaction);
                 if (!empty($transaction->sub_type) && $transaction->sub_type == 'repair') {
                     return redirect()
                         ->action('\Modules\Repair\Http\Controllers\RepairController@index')
                         ->with('status', $output);
                 }
 
-                if ($transaction->type == 'sales_order') {
+                // if ($transaction->sub_type == 'sales_order') {
+                //     return redirect()
+                //         ->action('SalesOrderController@index')
+                //         ->with('status', $output);
+                // }
+
+
+                if (!empty($transaction->sub_type)) {
                     return redirect()
                         ->action('SalesOrderController@index')
                         ->with('status', $output);

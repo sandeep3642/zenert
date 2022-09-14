@@ -288,6 +288,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         if (!auth()->user()->can('purchase.create')) {
             abort(403, 'Unauthorized action.');
         }
